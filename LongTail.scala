@@ -22,6 +22,7 @@ class LongTailUtil {
       }
     }
   }
+  //计算物品流行度k 以及流行度为k的物品数目
   def itemPopularity: Unit = {
     val ip1 = mutable.HashMap[Int, Int]() //电影的流行度(人数)-流行度为K的物品的总数
     for((userId, movies) <- data) {
@@ -40,8 +41,9 @@ class LongTailUtil {
         ip1 += (itemP -> 1)
       }
     }
-    ipNum = scala.collection.immutable.ListMap(ip1.toSeq.sortBy(_._1):_*)
+    ipNum = scala.collection.immutable.ListMap(ip1.toSeq.sortBy(_._1):_*) //最终结果 排序
   }
+  //计算用户活跃度k 以及活跃度为k的用户数目
   def userActivity: Unit = {
     val up = mutable.HashMap[Int, Int]()
     val up1 = mutable.HashMap[Int, Int]()
@@ -56,8 +58,9 @@ class LongTailUtil {
         up1 += (userVitality -> 1)
       }
     }
-    upNum = scala.collection.immutable.ListMap(up1.toSeq.sortBy(_._1):_*)
+    upNum = scala.collection.immutable.ListMap(up1.toSeq.sortBy(_._1):_*) //最终结果 进行排序
   }
+  //计算用户活跃度以及对应的平均物品流行度
   def userActivityAndItemPopularity: Unit = {
     var sum = 0.0
     var num = 0
@@ -80,8 +83,9 @@ class LongTailUtil {
         sum += itemPop(movieId)
       }
     }
-    upip = scala.collection.immutable.ListMap(uip.toSeq.sortBy(_._1):_*)
+    upip = scala.collection.immutable.ListMap(uip.toSeq.sortBy(_._1):_*)  //最终结果 排序
   }
+  //将结果输出到文件
   def writeToFile: Unit = {
     var writer = new PrintWriter(new File("/home/hadoop/RS/itemPopularity"))
     for((itemP, num) <- ipNum) {
